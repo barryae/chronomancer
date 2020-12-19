@@ -1,29 +1,38 @@
 import {width,height} from '../app.js';
-import Orb from './Orb.js';
 
 export default class Glyph {
-    constructor(){
+    constructor(orbs){
     this.x = width/2;
-    this.y = height*(2/3);
-    this.orbs = [];
-    }
-    
-    mapOrbs(orbLedger) {
-        this.orbs = orbLedger.map((orbItem) => {
-            let orb = new Orb(orbItem)
-            orb.x = this.x;
-            orb.y = this.y;
-            return orb
-        })
+    this.y = height/2;
+    this.r = height/4
+    this.orbs = orbs;
+    this.ctx = main.getContext('2d');
+    this.showCenter = false
     }
 
-    render() {
-        this.glyph = main.getContext('2d');
-        this.glyph.beginPath();
-        this.glyph.arc(this.x, this.y, height/4, 0, Math.PI * 2, true);
-        this.glyph.stroke();
-
+    renderGlyph() {
+        if(this.showCenter){
+            this.ctx.beginPath();
+            this.ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, true);
+            this.ctx.stroke();
+        }
         // Orbs
-        this.orbs.forEach(orb=>orb.render())
+        this.renderOrbs();
+    }
+
+    renderOrbs() {
+
+        const sections = this.orbs.length;
+
+        this.orbs.forEach((orb,i)=>{
+            const angle = i * (360/sections)+90;
+            const radians = angle/180*Math.PI;
+            const centerR = this.r*(2/3);
+            const orbX = this.x + centerR * Math.cos(radians);
+            const orbY = this.y - centerR * Math.sin(radians);
+            const orbR = this.r*(14-sections)/25;
+            orb.draw(orbX,orbY,orbR);
+        })
+
     }
 }
