@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/barryae/chronomancer/issues"
   },
-  "homepage": "https://github.com/barryae/chronomancer#readme"
+  "homepage": "https://github.com/barryae/chronomancer#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
