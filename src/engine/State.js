@@ -17,6 +17,10 @@ async function state(state) {
     
 }
 
+function start() {
+    glyph.draw(orbs)
+};
+
 function fillGlyph(orbsList) {
     let orbsArr = [];
     for(let i=0;i<glyphSize;i++){
@@ -24,10 +28,6 @@ function fillGlyph(orbsList) {
     }
     orbs = orbsArr;
 }
-
-function start() {
-    glyph.draw(orbs)
-};
 
 function rotate(e) {
     //console.log(e.keyCode)

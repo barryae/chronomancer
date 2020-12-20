@@ -22,9 +22,16 @@ function draw(newOrbs) {
     r = height/4;
     if(showCenter){
         ctx.beginPath();
+        ctx.arc(x+5, y+5, r, 0, Math.PI * 2, true);
+        ctx.fillStyle = 'lightgrey';
+        ctx.fill();
+        ctx.closePath();
+
+        ctx.beginPath();
         ctx.arc(x, y, r, 0, Math.PI * 2, true);
         ctx.fillStyle = 'beige';
         ctx.fill();
+        ctx.closePath();
     };
     // Orbs
     drawOrbs()
@@ -49,13 +56,23 @@ function drawOrb() {
         name,
         color,
         textColor
-    } = currOrb
+    } = currOrb;
+
     ctx.beginPath();
-    ctx.arc(orbX,orbY,orbR, 0, Math.PI * 2, true)
+    ctx.arc(orbX+5,orbY+5,orbR, 0, Math.PI * 2, true);
+    ctx.fillStyle = 'lightgrey';
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.arc(orbX,orbY,orbR, 0, Math.PI * 2, true);
+    ctx.strokeStyle = 'lightgrey';
     ctx.stroke();
     ctx.fillStyle = color;
-    ctx.fill()
-    text(name, orbX, orbY, textColor)
+    ctx.fill();
+    ctx.closePath();
+    
+    text(name, orbX, orbY, textColor);
 }
 
 function text(name,x,y,color){
