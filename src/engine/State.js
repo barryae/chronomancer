@@ -11,15 +11,11 @@ fillGlyph(orbsList);
 async function state(state) {
     switch (state){
         case 'start':
-            start()
+            glyph.draw(orbs)
             break
     }
     
 }
-
-function start() {
-    glyph.draw(orbs)
-};
 
 function fillGlyph(orbsList) {
     let orbsArr = [];
@@ -32,10 +28,9 @@ function fillGlyph(orbsList) {
 function rotate(e) {
     //console.log(e.keyCode)
     switch(e.keyCode) {
-        case 37:
-        case 65:
-            //left
-            rotateLeft()
+        case 39:
+        case 68:
+            right()
             glyph.draw(orbs);
             break
         case 38:
@@ -52,21 +47,20 @@ function rotate(e) {
                 glyph.draw(orbs);
             };
             break;
-        case 39:
-        case 68:
-            //right
-            rotateRight()
+        case 37:
+        case 65:
+            left()
             glyph.draw(orbs);
             break
     }
     e.preventDefault();
 }
 
-function rotateLeft() {
+function right() {
     orbs.unshift(orbs.pop());
 }
 
-function rotateRight() {
+function left() {
     orbs.push(orbs.shift());
 }
 

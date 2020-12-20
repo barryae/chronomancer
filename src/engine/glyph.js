@@ -41,11 +41,11 @@ function drawOrbs() {
     const sections = orbs.length;
     orbs.forEach((orbItem,i)=>{
         currOrb = orbItem
-        angle = i * (360/sections)+90;
+        angle = i * (360/sections);
         radians = angle/180*Math.PI;
         centerR = r*(2/3);
-        orbX = x + centerR * Math.cos(radians);
-        orbY = y - centerR * Math.sin(radians);
+        orbX = x + centerR * Math.sin(radians);
+        orbY = y - centerR * Math.cos(radians);
         orbR = r*(14-sections)/25;
         drawOrb();
     })
@@ -71,12 +71,12 @@ function drawOrb() {
     ctx.fillStyle = color;
     ctx.fill();
     ctx.closePath();
-    
+
     text(name, orbX, orbY, textColor);
 }
 
 function text(name,x,y,color){
-    ctx.font = '30px georgia';
+    ctx.font = `${orbR*3/7}px georgia`;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
     ctx.fillStyle = color;

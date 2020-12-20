@@ -22,15 +22,17 @@ function load() {
     width = main.width = window.innerWidth;
     height = main.height = window.innerHeight;
 
-    title('Chronomancer',width/4,height/8);
+    title('Chronomancer',width/7,height/8);
     state(storedState);
 }
 
 function title(primText,x,y) {
-    ctx.font = '40px serif';
+    ctx.font = `${x/4}px georgia`;
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
+    ctx.fillStyle = '#fffeeb';
     ctx.fillText(primText, x, y)
+
 }
 
 export {main, ctx, width, height};
