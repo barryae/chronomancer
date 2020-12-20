@@ -1,5 +1,4 @@
-import State from './engine/State.js';
-import Text from './objects/Text.js'
+import {state} from './engine/state.js';
 
 let storedState = localStorage.getItem('state')
 let main;
@@ -23,10 +22,15 @@ function load() {
     width = main.width = window.innerWidth;
     height = main.height = window.innerHeight;
 
-    new Text({type: 'title', primText:'Chronomancer'})
-    new State(storedState);
+    title('Chronomancer',width/4,height/8);
+    state(storedState);
 }
 
-
+function title(primText,x,y) {
+    ctx.font = '40px serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center';
+    ctx.fillText(primText, x, y)
+}
 
 export {main, ctx, width, height};
