@@ -11,7 +11,7 @@ const orbs = [
                 {
                     attack: 0,
                     self: 2,
-                    time: 5,
+                    time: 6,
                 },
             ],
             backward: [
@@ -35,15 +35,15 @@ const orbs = [
             forward: [
                 {
                     attack: 0,
-                    self: 1,
-                    time: 3,
+                    self: 0,
+                    time: 0,
                 },
             ],
             backward: [
                 {
                     attack: 0,
-                    self: 1,
-                    time: -3,
+                    self: 0,
+                    time: 0,
                 },
             ],
         },
@@ -86,7 +86,7 @@ const orbs = [
                 {
                     attack: 2,
                     self: 0,
-                    time: 5,
+                    time: 3,
                 },
             ],
             backward: [
@@ -110,15 +110,15 @@ const orbs = [
             forward: [
                 {
                     attack: 1,
-                    self: 0,
-                    time: 3,
+                    self: 1,
+                    time: 4,
                 },
             ],
             backward: [
                 {
-                    attack: 2,
-                    self: 0,
-                    time: -5,
+                    attack: 1,
+                    self: 1,
+                    time: -4,
                 },
             ],
         },
@@ -134,16 +134,16 @@ const orbs = [
         action: {
             forward: [
                 {
-                    attack: 1,
-                    self: 0,
+                    attack: 0,
+                    self: 1,
                     time: 3,
                 },
             ],
             backward: [
                 {
-                    attack: 2,
-                    self: 0,
-                    time: -5,
+                    attack: 0,
+                    self: 1,
+                    time: -3,
                 },
             ],
         },
@@ -161,14 +161,14 @@ const orbs = [
                 {
                     attack: 0,
                     self: 0,
-                    time: 7,
+                    time: 10,
                 },
             ],
             backward: [
                 {
                     attack: 0,
                     self: 0,
-                    time: -6,
+                    time: -10,
                 },
             ],
         },
@@ -191,8 +191,8 @@ const orbs = [
             ],
             backward: [
                 {
-                    attack: -3,
-                    self: 3,
+                    attack: 3,
+                    self: -3,
                     time: -4,
                 },
             ],

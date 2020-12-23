@@ -6,7 +6,7 @@ import { getRandInt } from "../utils/math.js";
 // const testNum = 6;
 // const orbs = new Array(testNum).fill({});
 
-window.addEventListener("keydown", game, false);
+
 let glyphSize = 8;
 let orbs;
 let enemyOrbs;
@@ -17,30 +17,14 @@ let selfConfig;
 let enemyConfig;
 let currState;
 let ctx = main.getContext("2d");
+let player = 1;
+window.addEventListener("keydown", handleInput, false);
+
 async function state(state) {
     currState = state;
     switch (state) {
         case "game":
-            fillGlyph(orbsList);
-            selfConfig = {
-                type: "self",
-                hp: 20,
-                orbs: orbs,
-                x: width / 2.75,
-                y: height / (3 / 2),
-                r: height / 4,
-            };
-            enemyConfig = {
-                type: "enemy",
-                hp: 20,
-                orbs: enemyOrbs,
-                x: width * (3 / 4),
-                y: height / 5,
-                r: height / 7,
-            };
-            self = selfConfig.hp;
-            enemy = enemyConfig.hp;
-            renderFrame();
+            init();
             break;
         case "gameOver":
             ctx.clearRect(0, 0, width, height);
@@ -48,12 +32,49 @@ async function state(state) {
     }
 }
 
-function game(e) {
+function init() {
+    makeOrbsLists(orbsList);
+    selfConfig = {
+        type: "self",
+        hp: 20,
+        orbs: orbs,
+        x: width / 2.75,
+        y: height / (3 / 2),
+        r: height / 4,
+    };
+    enemyConfig = {
+        type: "enemy",
+        hp: 20,
+        orbs: enemyOrbs,
+        x: width * (3 / 4),
+        y: height / 5,
+        r: height / 7,
+    };
+    self = selfConfig.hp;
+    enemy = enemyConfig.hp;
+    renderFrame();
+}
+
+function handleInput(e) {
+    if(player === 2){return}
     e.preventDefault();
-    rotate(e.keyCode, selfConfig);
+    const key = e.keyCode;
+    const directions = [37,39,65,68]
+    directions.includes(key) ?
+    game(key) :
+    changeSize(key);
+}
+
+async function game(key) {
+    rotate(key, selfConfig);
+    renderFrame();
+    player = 2;
     setTimeout(() => {
-        let keyCode = 39;
+        let keys = [37, 39];
+        let keyCode = keys[getRandInt(0, 2)];
         rotate(keyCode, enemyConfig);
+        renderFrame();
+        player = 1;
     }, 1000);
 }
 
@@ -61,31 +82,36 @@ function rotate(keyCode, player) {
     if (currState === "gameOver") {
         return;
     }
-    //console.log(e.keyCode)
     switch (keyCode) {
         case 39:
         case 68:
-            right(player);
-            renderFrame();
+            action(player, "forward");
+            player.orbs.unshift(player.orbs.pop());
             break;
+        case 37:
+        case 65:
+            action(player, "backward");
+            player.orbs.push(player.orbs.shift());
+            break
+    }
+}
+
+function changeSize(keyCode){
+    switch (keyCode) {
         case 38:
         case 87:
             if (glyphSize < 8) {
                 glyphSize++;
-                state("game");
+                init();
             }
             break;
         case 40:
         case 83:
             if (glyphSize > 1) {
                 glyphSize--;
-                state("game");
+                init();
             }
             break;
-        case 37:
-        case 65:
-            left(player);
-            renderFrame();
     }
 }
 
@@ -97,25 +123,25 @@ function stats() {
     ];
     let statCol = width / 28;
     stats.forEach((stat, i) => {
-        let statRow = height / 5 + i * 100;
+        let statRow = height / 5 + i * 50;
         ctx.font = `25px georgia`;
         ctx.textBaseline = "middle";
         ctx.textAlign = "left";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "#fffeeb";
         ctx.fillText(`${stat[0]}: ${stat[1]}`, statCol, statRow);
     });
 }
 
 function renderFrame() {
     ctx.clearRect(0, 0, width, height);
-    title("Chronomancer", width / 7, height / 8);
+    title("CHRONOMANCER", width / 7, height / 8);
     glyph.draw(enemyConfig);
-    //cloud.draw(enemyConfig, selfConfig);
+    cloud.draw(enemyConfig, selfConfig);
     glyph.draw(selfConfig);
     stats();
 }
 
-function fillGlyph(orbsList) {
+function makeOrbsLists(orbsList) {
     let orbsArr = [];
     for (let i = 0; i < glyphSize; i++) {
         orbsArr.push(orbsList[i]);
@@ -124,23 +150,24 @@ function fillGlyph(orbsList) {
     enemyOrbs = orbsArr.map((x) => x);
 }
 
-function right(player) {
-    action(player, "forward");
-    player.orbs.unshift(player.orbs.pop());
-}
-
-function left(player) {
-    action(player, "backward");
-    player.orbs.push(player.orbs.shift());
-}
-
 function action(player, dir) {
     let opponent = player.type === "self" ? enemyConfig : selfConfig;
     player.hp += player.orbs[0].action[dir][0].self;
     opponent.hp -= player.orbs[0].action[dir][0].attack;
     time += player.orbs[0].action[dir][0].time;
-    if (time >= 100 || time <= -100) {
+    if (
+        time >= 100 ||
+        time <= -100 ||
+        selfConfig.hp < 0 ||
+        enemyConfig.hp < 0
+    ) {
         state("gameOver");
+        if (selfConfig.hp < 0) {
+            self = 0;
+        }
+        if (enemyConfig.hp < 0) {
+            enemy = 0;
+        }
     } else {
         self = selfConfig.hp;
         enemy = enemyConfig.hp;
@@ -150,9 +177,9 @@ function action(player, dir) {
 function title(primText, x, y) {
     ctx.font = `${x / 4}px georgia`;
     ctx.textBaseline = "middle";
-    ctx.textAlign = "center";
+    ctx.textAlign = "left";
     ctx.fillStyle = "#fffeeb";
-    ctx.fillText(primText, x, y);
+    ctx.fillText(primText, x/4, y);
 }
 
 export { state, orbs };

@@ -8,12 +8,12 @@ function draw(enemy, self) {
     x = (enemy.x + self.x) / 2;
     y = (enemy.y + self.y) / 2;
     r = enemy.r;
-    let top = enemy.y + r / 3;
+    let top = enemy.y + r / 2;
     let bot = self.y;
     let left = main.width / 10;
-    let right = enemy.x + r * 2;
-    let clouds = 100;
-
+    let right = enemy.x + r;
+    let clouds = 75;
+    const colors = ['#ededed','#f5f5f5','#d6d6d6'];
     for (let i = 0; i < clouds; i++) {
         let currX = getRandomInt(left, right);
         let ratio = right / currX;
@@ -27,7 +27,7 @@ function draw(enemy, self) {
         }
         ctx.beginPath();
         ctx.arc(currX, currY, r, 0, Math.PI * 2, true);
-        ctx.fillStyle = "lightgrey";
+        ctx.fillStyle = colors[getRandomInt(0,3)];
         ctx.closePath();
         ctx.fill();
     }
